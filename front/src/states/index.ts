@@ -6,13 +6,14 @@ import { ref } from "vue";
 // Game status
 export const currentNumber = ref<number | null>(null);
 export const uuid = useLocalStorage("userId", nanoid());
-export const name = ref("");
+export const name = useLocalStorage("userName", "");
 
 // Bingo status
 export const grid = useLocalStorage("grid", generateBingoArray());
 export enum Status {
   Bingo,
   Reach,
-  None
+  None,
 }
-export const currentStatus = ref<Status>(Status.None);
+
+export const currentStatus = useLocalStorage<Status>("status",Status.None);

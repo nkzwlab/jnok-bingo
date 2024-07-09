@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="status">
-      Status: {{ currentStatusString }}
+      {{ currentStatusString }}
     </div>
   </div>
 </template>
@@ -37,11 +37,11 @@ const isMarked = (rowIndex: number, cellIndex: number) => {
 const currentStatusString = computed(() => {
   switch (currentStatus.value) {
     case Status.Bingo:
-      return "Bingo!";
+      return "ビンゴ🎉"
     case Status.Reach:
-      return "Reach!";
+      return "リーチ！"
     default:
-      return "None";
+      return "";
   }
 });
 
@@ -86,10 +86,13 @@ watch(markedCells, checkBingoAndReach, { deep: true });
 </script>
 
 <style scoped>
+
 .bingo-grid {
   display: grid;
-  grid-template-columns: repeat(5, 50px);
+  grid-template-columns: repeat(5, 1fr);
   gap: 5px;
+  max-width: 500px;
+  margin: auto;
 }
 
 .row {
@@ -97,8 +100,10 @@ watch(markedCells, checkBingoAndReach, { deep: true });
 }
 
 .cell {
-  width: 50px;
-  height: 50px;
+  width: 100px;
+  /* Set a fixed width */
+  height: 100px;
+  /* Set a fixed height */
   display: flex;
   justify-content: center;
   align-items: center;
