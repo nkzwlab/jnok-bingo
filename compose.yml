@@ -3,11 +3,6 @@
 services:
   deno:
     build: ./server
-    ports:
-      - "8001:8001"
-      - "8000:8000"
-    networks:
-      - nginx-proxy
   front:
     build:
       context: front
@@ -17,8 +12,3 @@ services:
       - deno
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
-    networks:
-      - nginx-proxy
-networks:
-  nginx-proxy:
-    external: true
