@@ -6,7 +6,9 @@ import { currentNumber, grid, name } from '@/states';
 const isModalOpen = ref(true);
 
 const toggleModal = () => {
-  isModalOpen.value = !isModalOpen.value;
+  if (name.value) {
+    isModalOpen.value = !isModalOpen.value;
+  }
 };
 </script>
 
