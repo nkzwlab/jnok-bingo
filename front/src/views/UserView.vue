@@ -94,4 +94,11 @@ const toggleModal = () => {
   bottom: 20px;
   right: 20px;
 }
+
+@media screen and (max-width: 900px) {
+  .wrapper {
+    flex-direction: column;
+    justify-content: center;
+  }
+}
 </style>
