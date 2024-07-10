@@ -123,4 +123,17 @@ watch(markedCells, checkBingoAndReach, { deep: true });
   color: #fff;
   font-size: 20px;
 }
+
+@media (max-width: 600px) {
+  .bingo-grid {
+    max-width: 100%;
+    gap: 3px;
+  }
+
+  .cell {
+    width: 17vw;
+    height: 17vw;
+    font-size: 5vw;
+  }
+}
 </style>
