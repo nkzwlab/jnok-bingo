@@ -16,6 +16,6 @@ watch([name, currentStatus], ([newName, newStatus]) => {
     name: newName,
     status: newStatus,
     uuid: uuid.value,
-    allNumbers: allNumbers.value,
+    currentNumber: allNumbers.value[allNumbers.value.length - 1],
   });
 });
