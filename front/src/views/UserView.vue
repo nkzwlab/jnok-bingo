@@ -50,6 +50,7 @@ const currentNumber = computed(() => allNumbers.value[allNumbers.value.length - 
 }
 
 .current-number {
+  margin-top: 16px;
   font-size: 40px;
   color: #fff;
 }
