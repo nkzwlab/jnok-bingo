@@ -6,9 +6,9 @@
         {{ cellIndex === 2 && rowIndex === 2 ? 'Free' : cell }}
       </div>
     </div>
-    <div class="status">
-      {{ currentStatusString }}
-    </div>
+  </div>
+  <div class="status">
+    {{ currentStatusString }}
   </div>
 </template>
 
@@ -119,9 +119,10 @@ watch(markedCells, checkBingoAndReach, { deep: true });
 }
 
 .status {
-  margin-top: 20px;
+  margin-top: 12px;
   color: #fff;
   font-size: 20px;
+  text-align: center;
 }
 
 @media (max-width: 600px) {

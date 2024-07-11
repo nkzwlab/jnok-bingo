@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import BingoUI from '../components/BingoGrid.vue';
-import { currentNumber, grid, name } from '@/states';
+import { allNumbers, grid, name } from '@/states';
 
 const isModalOpen = ref(true);
 
@@ -10,6 +10,9 @@ const toggleModal = () => {
     isModalOpen.value = !isModalOpen.value;
   }
 };
+
+const numberHistory = computed(() => allNumbers.value.slice(0, -1).reverse().join(', '));
+const currentNumber = computed(() => allNumbers.value[allNumbers.value.length - 1]);
 </script>
 
 <template>
@@ -20,6 +23,10 @@ const toggleModal = () => {
     <div class="bingo-info">
       <div class="current-number">
         現在の数字: {{ currentNumber ?? '??' }}
+      </div>
+      <div class="result-item">
+        <span class="result-label">過去の数字:</span>
+        <span class="result-content">{{ numberHistory }}</span>
       </div>
     </div>
 
@@ -43,6 +50,7 @@ const toggleModal = () => {
 }
 
 .current-number {
+  margin-top: 16px;
   font-size: 40px;
   color: #fff;
 }
@@ -51,6 +59,27 @@ const toggleModal = () => {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
+}
+
+.result-item {
+  display: flex;
+  flex-direction: column;
+  margin: 24px 0;
+  /* Reduced margin */
+  align-items: center;
+}
+
+.result-label {
+  font-weight: bold;
+  color: #ffffff;
+  font-size: 16px;
+  /* Reduced font size */
+}
+
+.result-content {
+  font-size: 24px;
+  /* Reduced font size */
+  color: #ffffff;
 }
 
 /* Modal styles */

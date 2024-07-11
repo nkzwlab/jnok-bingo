@@ -1,14 +1,14 @@
 import { io } from "socket.io-client";
 import { watch } from "vue";
-import { currentNumber, name, currentStatus, uuid } from "@/states";
+import { allNumbers, name, currentStatus, uuid } from "@/states";
 import { isDev } from "@/utils/is_dev";
 
 const socket = io(isDev ? "http://localhost:8000" : "/", {
   path: isDev ? "/socket.io" : "/user-socket/socket.io",
 });
 
-socket.on("nextNumber", (number: number) => {
-  currentNumber.value = number;
+socket.on("allNumbers", (numbers: number[]) => {
+  allNumbers.value = numbers;
 });
 
 watch([name, currentStatus], ([newName, newStatus]) => {
@@ -16,6 +16,6 @@ watch([name, currentStatus], ([newName, newStatus]) => {
     name: newName,
     status: newStatus,
     uuid: uuid.value,
-    currentNumber: currentNumber.value,
+    currentNumber: allNumbers.value[allNumbers.value.length - 1],
   });
 });
