@@ -4,7 +4,7 @@ import { nanoid } from "nanoid";
 import { ref } from "vue";
 
 // Game status
-export const currentNumber = ref<number | null>(null);
+export const allNumbers = ref<number[]>([]);
 export const uuid = useLocalStorage("userId", nanoid());
 export const name = useLocalStorage("userName", "");
 

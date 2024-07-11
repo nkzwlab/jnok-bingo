@@ -42,7 +42,7 @@ adminIo.on("connection", (socket) => {
     if (oldNumbers.value.length === 75) return;
     latestNumber.value = generateNewNumber(oldNumbers.value);
     oldNumbers.value.push(latestNumber.value);
-    io.emit("nextNumber", latestNumber.value);
+    io.emit("allNumbers", oldNumbers.value);
     adminIo.emit("nextNumber", latestNumber.value);
     adminIo.emit("allNumbers", oldNumbers.value);
   });
