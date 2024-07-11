@@ -13,16 +13,13 @@
 </template>
 
 <script setup lang="ts">
-import { currentStatus, Status } from '@/states';
-import { ref, defineProps, watch, computed } from 'vue';
+import { currentStatus, markedCells, Status } from '@/states';
+import { defineProps, watch, computed } from 'vue';
 
 const { grid } = defineProps<{
   grid: number[][];
 }>();
 
-const markedCells = ref<boolean[][]>(
-  grid.map((row, rowIndex) => row.map((_, cellIndex) => rowIndex === 2 && cellIndex === 2))
-);
 
 const markCell = (rowIndex: number, cellIndex: number) => {
   if (rowIndex === 2 && cellIndex === 2) return; // Skip the free zone
@@ -86,7 +83,6 @@ watch(markedCells, checkBingoAndReach, { deep: true });
 </script>
 
 <style scoped>
-
 .bingo-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);

@@ -16,4 +16,11 @@ export enum Status {
   None,
 }
 
-export const currentStatus = useLocalStorage<Status>("status",Status.None);
+export const currentStatus = useLocalStorage<Status>("status", Status.None);
+
+export const markedCells = useLocalStorage<boolean[][]>(
+  "markedCells",
+  grid.value.map((row, rowIndex) =>
+    row.map((_, cellIndex) => rowIndex === 2 && cellIndex === 2),
+  ),
+);
