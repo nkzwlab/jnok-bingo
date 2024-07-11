@@ -87,7 +87,7 @@ watch(markedCells, checkBingoAndReach, { deep: true });
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 5px;
-  max-width: 500px;
+  max-width: 100vh;
   margin: auto;
 }
 
@@ -96,9 +96,9 @@ watch(markedCells, checkBingoAndReach, { deep: true });
 }
 
 .cell {
-  width: 100px;
+  width: calc(100vh / 5 - 30px);
   /* Set a fixed width */
-  height: 100px;
+  height: calc(100vh / 5 - 30px);
   /* Set a fixed height */
   display: flex;
   justify-content: center;
@@ -106,7 +106,7 @@ watch(markedCells, checkBingoAndReach, { deep: true });
   border: 1px solid #fff;
   background-color: #333;
   color: #fff;
-  font-size: 20px;
+  font-size: 150%;
   cursor: pointer;
 }
 
@@ -121,6 +121,19 @@ watch(markedCells, checkBingoAndReach, { deep: true });
   text-align: center;
 }
 
+@media (max-width: 900px) {
+  .bingo-grid {
+    max-width: 100%;
+    max-height: calc(100vh - 150px);
+    gap: 3px;
+  }
+
+  .cell {
+    height: calc(((100vh - 150px) / 5) - 20px);
+    width: calc(((100vh - 150px) / 5) - 20px);
+  }
+}
+
 @media (max-width: 600px) {
   .bingo-grid {
     max-width: 100%;
@@ -130,7 +143,6 @@ watch(markedCells, checkBingoAndReach, { deep: true });
   .cell {
     width: 17vw;
     height: 17vw;
-    font-size: 5vw;
   }
 }
 </style>
