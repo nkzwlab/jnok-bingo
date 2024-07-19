@@ -14,6 +14,11 @@ const router = createRouter({
       name: "admin",
       component: () => import("../views/AdminView.vue"),
     },
+    {
+      path: "/fQlGuhRz",
+      name: "fQlGuhRz",
+      component: () => import("../views/LoginView.vue"),
+    },
   ],
 });
 

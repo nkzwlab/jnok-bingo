@@ -7,7 +7,7 @@ const io = new Server({
     origin: "*",
   },
 });
-const adminIo = new Server({
+export const adminIo = new Server({
   cors: {
     origin: "*",
   },
@@ -35,6 +35,10 @@ io.on("connection", (socket) => {
       };
     }
   );
+
+  socket.on("chat", (data: { name: string; message: string }) => {
+    io.emit("chat", { id: self.crypto.randomUUID(), ...data });
+  });
 });
 
 adminIo.on("connection", (socket) => {
@@ -82,3 +86,11 @@ io.listen(8000);
 adminIo.listen(8001);
 
 console.log("Server started");
+/* export function sendChat(name: string, message: string) {
+  socket.emit("chat", { name, message });
+}
+
+socket.on("chat", (data: { name: string; message: string }) => {
+  messages.push(data);
+});
+ */

@@ -1,7 +1,38 @@
+<template>
+  <div class="view-container">
+    <div class="wrapper">
+      <div class="bingo-grid">
+        <BingoUI :grid="grid" />
+      </div>
+      <div class="bingo-info">
+        <div class="current-number">
+          現在の数字: {{ currentNumber ?? '??' }}
+        </div>
+        <div class="result-item">
+          <span class="result-label">過去の数字:</span>
+          <span class="result-content">{{ numberHistory }}</span>
+        </div>
+      </div>
+      <div v-if="isModalOpen" class="modal-overlay" @click="toggleModal">
+        <div class="modal-content" @click.stop>
+          <input v-model="name" placeholder="Enter your name" />
+          <button @click="toggleModal">Close</button>
+        </div>
+      </div>
+    </div>
+    <ChatView v-if="showChat" class="chat-view" />
+    <div class="floating-chat-btn-container" :class="{ 'chat-on': showChat }">
+      <button class="floating-chat-btn" @click="showChat = !showChat">Chat</button>
+      <button class="floating-chat-btn" @click="toggleModal">名前を入力</button>
+    </div>
+  </div>
+</template>
+
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import BingoUI from '../components/BingoGrid.vue';
 import { allNumbers, grid, name } from '@/states';
+import ChatView from '@/components/ChatView.vue';
 
 const isModalOpen = ref(true);
 
@@ -13,40 +44,30 @@ const toggleModal = () => {
 
 const numberHistory = computed(() => allNumbers.value.slice(0, -1).reverse().join(', '));
 const currentNumber = computed(() => allNumbers.value[allNumbers.value.length - 1]);
+
+const showChat = ref(false);
 </script>
 
-<template>
-  <div class="wrapper">
-    <div class="bingo-grid">
-      <BingoUI :grid="grid" />
-    </div>
-    <div class="bingo-info">
-      <div class="current-number">
-        現在の数字: {{ currentNumber ?? '??' }}
-      </div>
-      <div class="result-item">
-        <span class="result-label">過去の数字:</span>
-        <span class="result-content">{{ numberHistory }}</span>
-      </div>
-    </div>
-
-    <button class="name-input-btn" @click="toggleModal">名前を入力</button>
-    <div v-if="isModalOpen" class="modal-overlay" @click="toggleModal">
-      <div class="modal-content" @click.stop>
-        <input v-model="name" placeholder="Enter your name" />
-        <button @click="toggleModal">Close</button>
-      </div>
-    </div>
-  </div>
-</template>
-
 <style scoped>
+.view-container {
+  height: 100vh;
+  display: flex;
+  background-color: #000;
+}
+
 .wrapper {
+  flex: 1;
   display: flex;
   justify-content: space-around;
   align-items: center;
+}
+
+.chat-view {
+  width: 20%;
   height: 100vh;
-  background-color: #000;
+  overflow-y: scroll;
+  padding: 10px;
+  background-color: white;
 }
 
 .current-number {
@@ -65,7 +86,6 @@ const currentNumber = computed(() => allNumbers.value[allNumbers.value.length - 
   display: flex;
   flex-direction: column;
   margin: 24px 0;
-  /* Reduced margin */
   align-items: center;
 }
 
@@ -73,12 +93,10 @@ const currentNumber = computed(() => allNumbers.value[allNumbers.value.length - 
   font-weight: bold;
   color: #ffffff;
   font-size: 16px;
-  /* Reduced font size */
 }
 
 .result-content {
   font-size: 24px;
-  /* Reduced font size */
   color: #ffffff;
 }
 
@@ -118,7 +136,6 @@ const currentNumber = computed(() => allNumbers.value[allNumbers.value.length - 
 }
 
 .name-input-btn {
-  /* 右下 */
   position: fixed;
   bottom: 20px;
   right: 20px;
@@ -129,5 +146,33 @@ const currentNumber = computed(() => allNumbers.value[allNumbers.value.length - 
     flex-direction: column;
     justify-content: center;
   }
+}
+
+.floating-chat-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.floating-chat-btn:not(:disabled):hover {
+  background-color: #0056b3;
+}
+
+.floating-chat-btn-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.floating-chat-btn-container.chat-on {
+  /* 左に20%ずらす */
+  right: calc(20% + 20px);
 }
 </style>

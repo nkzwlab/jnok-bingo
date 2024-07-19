@@ -1,0 +1,15 @@
+version: "3"
+
+tasks:
+  front:
+    cmds:
+      - npm run dev
+    dir: front
+  server:
+    cmds:
+      - denon run -A main.ts
+    dir: server
+  run:
+    deps:
+      - front
+      - server

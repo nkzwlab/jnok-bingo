@@ -30,9 +30,18 @@ import { newNumber, resetAll } from '@/gateway/admin';
 import { allNumbers, bingoPeople } from '@/states/admin';
 import { computed } from 'vue';
 import '../gateway/admin';
+import { onMounted } from 'vue';
+import router from '@/router';
 
 const numberHistory = computed(() => allNumbers.value.slice(0, -1).reverse().join(', '));
 const currentNumber = computed(() => allNumbers.value[allNumbers.value.length - 1]);
+
+onMounted(() => {
+  if (!localStorage.getItem('pwd1234')) {
+    router.push('/')
+  }
+})
+
 </script>
 
 <style>
