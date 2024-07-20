@@ -1,5 +1,5 @@
 <template>
-  <button v-if="answerCorrect != null" @click="inQuiz = false">閉じる</button>
+  <!-- <button v-if="answerCorrect != null" @click="inQuiz = false">閉じる</button> -->
   <div class="options">
     <div v-if="answerCorrect != null" class="result">
       <span v-if="answerCorrect === true">⭕️</span>
@@ -20,7 +20,7 @@
 
 <script setup lang="ts">
 import { quizAnswer } from '@/gateway';
-import { inQuiz } from '@/states/quiz';
+// import { inQuiz } from '@/states/quiz';
 import { alreadyAnswered, answerCorrect, options, selectedOption } from '@/states/quiz';
 
 const selectOption = (option: string) => {

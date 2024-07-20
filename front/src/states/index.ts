@@ -40,7 +40,6 @@ export const markedCells = useLocalStorage<BingoCellStatus[][]>(
 
 export function stealCell(cellStatus: BingoCellStatus) {
   if (answerCorrect.value === false) {
-    console.log("sc2");
     // 現在マークされたCellのうち、ランダムに1つを選び、ステータスをStolenに変更する
     const markedCellIndexes = markedCells.value
       .flatMap((row, rowIndex) =>
@@ -49,12 +48,10 @@ export function stealCell(cellStatus: BingoCellStatus) {
         ),
       )
       .filter((cell) => cell !== null) as [number, number][];
-    if (markedCellIndexes) {
+    if (markedCellIndexes.length > 0) {
       const randomIndex = Math.floor(Math.random() * markedCellIndexes.length);
       const [rowIndex, cellIndex] = markedCellIndexes[randomIndex];
-      console.log([rowIndex, cellIndex]);
       markedCells.value[rowIndex][cellIndex] = cellStatus;
-      console.log("marked cell stolen");
     }
   }
 }

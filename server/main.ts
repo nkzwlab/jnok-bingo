@@ -38,13 +38,15 @@ io.on("connection", (socket) => {
   );
 
   socket.on("chat", (data: { name: string; message: string }) => {
-    console.log(data);
     io.emit("chat", { id: self.crypto.randomUUID(), ...data });
   });
 
-  socket.on("answer", (data: { answer: string; uuid: string }) => {
-    addAnswer(data.answer, data.uuid);
-  });
+  socket.on(
+    "answer",
+    (data: { answer: string; uuid: string; userName: string }) => {
+      addAnswer(data.answer, data.uuid, data.userName);
+    }
+  );
 });
 
 adminIo.on("connection", (adminSocket) => {

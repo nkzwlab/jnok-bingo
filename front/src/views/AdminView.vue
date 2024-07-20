@@ -1,5 +1,8 @@
 <template>
   <div class="bingo-container">
+    <div class="modal-overlay" v-if="quizModalOpen">
+      <AnswerModal />
+    </div>
     <div class="left-panel">
       <button class="new-number-btn" @click="newNumber" :disabled="allNumbers.length === 75">次の数</button>
       <button class="new-number-btn" @click="resetAll">リセット</button>
@@ -30,17 +33,19 @@
 </template>
 
 <script setup lang="ts">
-import { newNumber, quizStart, resetAll } from '@/gateway/admin';
+import { newNumber, resetAll } from '@/gateway/admin';
 import { allNumbers, bingoPeople } from '@/states/admin';
 import { computed } from 'vue';
 import '../gateway/admin';
 import { onMounted } from 'vue';
 import router from '@/router';
+import AnswerModal from '@/components/AnswerModal.vue';
+import { quizModalOpen, quizStart } from '@/states/quizData';
 
 const numberHistory = computed(() => allNumbers.value.slice(0, -1).reverse().join(', '));
 const currentNumber = computed(() => allNumbers.value[allNumbers.value.length - 1]);
 
-let quizIds = ["q1", "q2", "q3", "q4"];
+let quizIds = ["q1", "q2", "q3", "q4", "q5"];
 
 onMounted(() => {
   if (!localStorage.getItem('pwd1234')) {
@@ -158,5 +163,17 @@ body {
   .bingo-container {
     min-height: 100vh;
   }
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

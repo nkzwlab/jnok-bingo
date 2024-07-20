@@ -42,7 +42,9 @@ export function quizAnswer(answer: string) {
   /* socket.on("answer", (data: { answer: string; uuid: string }) => {
     addAnswer(data.answer, data.uuid);
   }); */
-  socket.emit("answer", { answer, uuid: uuid.value });
+
+  /* socket.on("answer", (data: { answer: string; uuid: string userName: string }) => { */
+  socket.emit("answer", { answer, uuid: uuid.value, userName: name.value });
 }
 
 socket.on("chat", (data: { name: string; message: string; id: string }) => {
@@ -69,19 +71,12 @@ export const answerCorrect = ref<boolean | null>(null);
 
   answerCorrect.value = data.answer === selectedOption.value;
   alreadyAnswered.value = true;
-  console.log({
-    answerCorrect: answerCorrect.value,
-    selectedOption: selectedOption.value,
-    answer: data.answer,
-  });
-  console.log(answerCorrect.value, selectedOption.value, data.answer);
   if (answerCorrect.value === false) {
-    console.log("sc1");
     stealCell(
       answerCorrect.value ? BingoCellStatus.Marked : BingoCellStatus.Stolen,
     );
   }
-  await new Promise((resolve) => setTimeout(resolve, 3000));
+  await new Promise((resolve) => setTimeout(resolve, 10 * 3000));
   inQuiz.value = false;
   selectedOption.value = null;
   answerCorrect.value = null;

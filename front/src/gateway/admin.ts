@@ -1,6 +1,12 @@
 import { io } from "socket.io-client";
 import { allNumbers, bingoPeople } from "@/states/admin";
 import { isDev } from "@/utils/is_dev";
+import {
+  answerRevealed,
+  currentQuizItems,
+  fastest,
+  quizModalOpen,
+} from "@/states/quizData";
 
 const adminSocket = io(isDev ? "http://localhost:8001" : "/", {
   path: isDev ? "/socket.io" : "/admin-socket/socket.io",
@@ -16,23 +22,36 @@ adminSocket.on(
   },
 );
 
-/* adminIo.emit("adminQuizEnd", {
-    quizId,
-    counts,
-    fastest: {
-      userAnswer: fastest?.userAnswer,
-      timestamp: fastest ? timestamp - fastest.timestamp : undefined,
-    },
-  }); */
-
 adminSocket.on(
   "adminQuizEnd",
-  (data: {
+  async (data: {
     quizId: string;
     counts: { [key: string]: number };
-    fastest: { userAnswer: string | undefined; timestamp: number | undefined };
+    fastest: {
+      userAnswer: string | undefined;
+      timestamp: number | undefined;
+      username: string | undefined;
+    };
   }) => {
-    console.log(data);
+    ["a", "b", "c", "d"].forEach((key) => {
+      currentQuizItems.value.find((item) => item.label === key)!.count =
+        data.counts[key];
+    });
+    answerRevealed.value = true;
+
+    if (
+      data.fastest.userAnswer != undefined &&
+      data.fastest.timestamp != undefined &&
+      data.fastest.username != undefined
+    ) {
+      const timestampInSec = data.fastest.timestamp / 1000;
+      fastest.value = `最速回答は${data.fastest.username}さんの、${timestampInSec}秒でした！`;
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 10 * 3000));
+    answerRevealed.value = false;
+    quizModalOpen.value = false;
+    fastest.value = "";
   },
 );
 
@@ -48,6 +67,6 @@ export function resetAll() {
   adminSocket.emit("resetAll");
 }
 
-export function quizStart(quizId: string) {
+export function emitQuizStart(quizId: string) {
   adminSocket.emit("quizStart", quizId);
 }

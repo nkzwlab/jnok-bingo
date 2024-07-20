@@ -5,6 +5,7 @@ const answers: { [key: string]: string } = {
   q2: "a",
   q3: "c",
   q4: "c",
+  q5: "d",
 };
 
 let acceptingAnswers = false;
@@ -12,6 +13,7 @@ let acceptingAnswers = false;
 const answerMap: {
   [key: string]: {
     userAnswer: string;
+    userName: string;
     timestamp: number;
   };
 } = {};
@@ -20,10 +22,9 @@ export async function quizStart(quizId: string) {
   io.emit("quizStart");
   acceptingAnswers = true;
   const timestamp = Date.now();
-  await new Promise((resolve) => setTimeout(resolve, 3000));
+  await new Promise((resolve) => setTimeout(resolve, 10 * 1000));
   acceptingAnswers = false;
   // check answers
-  console.log(answerMap);
 
   const aAnswer = Object.values(answerMap).filter((a) => a.userAnswer === "a");
   const bAnswer = Object.values(answerMap).filter((a) => a.userAnswer === "b");
@@ -47,7 +48,7 @@ export async function quizStart(quizId: string) {
       case "d":
         return dAnswer;
     }
-  })() as { userAnswer: string; timestamp: number }[];
+  })() as { userAnswer: string; timestamp: number; userName: string }[];
   const fastest = (() => {
     if (answerArr) {
       return answerArr.sort((a, b) => a.timestamp - b.timestamp)[0];
@@ -62,6 +63,7 @@ export async function quizStart(quizId: string) {
     fastest: {
       userAnswer: fastest?.userAnswer,
       timestamp: fastest ? fastest.timestamp - timestamp : undefined,
+      username: fastest?.userName,
     },
   });
 
@@ -70,7 +72,11 @@ export async function quizStart(quizId: string) {
   });
 }
 
-export function addAnswer(userAnswer: string, userId: string) {
+export function addAnswer(
+  userAnswer: string,
+  userId: string,
+  userName: string
+) {
   console.log("Adding answer1", userId, userAnswer);
   if (!acceptingAnswers) {
     return;
@@ -79,6 +85,7 @@ export function addAnswer(userAnswer: string, userId: string) {
 
   answerMap[userId] = {
     userAnswer,
+    userName,
     timestamp: Date.now(),
   };
 }
