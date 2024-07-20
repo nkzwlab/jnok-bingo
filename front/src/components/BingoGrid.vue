@@ -1,8 +1,10 @@
 <template>
   <div class="bingo-grid">
     <div v-for="(row, rowIndex) in grid" :key="rowIndex" class="row">
-      <div v-for="(cell, cellIndex) in row" :key="cellIndex" class="cell"
-        :class="{ marked: isMarked(rowIndex, cellIndex) }" @click="markCell(rowIndex, cellIndex)">
+      <div v-for="(cell, cellIndex) in row" :key="cellIndex" class="cell" :class="{
+        marked: isMarked(rowIndex, cellIndex),
+        stolen: isStolen(rowIndex, cellIndex)
+      }" @click="markCell(rowIndex, cellIndex)">
         {{ cellIndex === 2 && rowIndex === 2 ? 'Free' : cell }}
       </div>
     </div>
@@ -13,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { currentStatus, markedCells, Status } from '@/states';
+import { BingoCellStatus, currentStatus, markedCells, Status } from '@/states';
 import { defineProps, watch, computed } from 'vue';
 
 const { grid } = defineProps<{
@@ -22,13 +24,20 @@ const { grid } = defineProps<{
 
 
 const markCell = (rowIndex: number, cellIndex: number) => {
+  if (markedCells.value[rowIndex][cellIndex] === BingoCellStatus.Stolen) return;
   if (rowIndex === 2 && cellIndex === 2) return; // Skip the free zone
-  markedCells.value[rowIndex][cellIndex] = !markedCells.value[rowIndex][cellIndex];
-  checkBingoAndReach();
+  if (markedCells.value[rowIndex][cellIndex] === BingoCellStatus.Marked) {
+    markedCells.value[rowIndex][cellIndex] = BingoCellStatus.Unmarked;
+  } else {
+    markedCells.value[rowIndex][cellIndex] = BingoCellStatus.Marked;
+  }
 };
 
 const isMarked = (rowIndex: number, cellIndex: number) => {
-  return markedCells.value[rowIndex][cellIndex];
+  return markedCells.value[rowIndex][cellIndex] === BingoCellStatus.Marked;
+};
+const isStolen = (rowIndex: number, cellIndex: number) => {
+  return markedCells.value[rowIndex][cellIndex] === BingoCellStatus.Stolen;
 };
 
 const currentStatusString = computed(() => {
@@ -48,25 +57,32 @@ const checkBingoAndReach = () => {
 
   // Check rows and columns
   for (let i = 0; i < 5; i++) {
-    const rowMarkedCount = markedCells.value[i].filter(cell => cell).length;
-    const colMarkedCount = markedCells.value.map(row => row[i]).filter(cell => cell).length;
+    const rowMarkedCount = markedCells.value[i].filter(cell => cell === BingoCellStatus.Marked).length;
+    const colMarkedCount = markedCells.value.map(row => row[i]).filter(cell => cell === BingoCellStatus.Marked).length;
+
+    // steal count
+    const rowStolenCount = markedCells.value[i].filter(cell => cell === BingoCellStatus.Stolen).length;
+    const colStolenCount = markedCells.value.map(row => row[i]).filter(cell => cell === BingoCellStatus.Stolen).length;
+
 
     if (rowMarkedCount === 5) bingos++;
     if (colMarkedCount === 5) bingos++;
 
-    if (rowMarkedCount === 4) reaches++;
-    if (colMarkedCount === 4) reaches++;
+    if (rowMarkedCount === 4 && rowStolenCount === 0) reaches++;
+    if (colMarkedCount === 4 && colStolenCount === 0) reaches++;
   }
 
   // Check diagonals
-  const mainDiagonalCount = markedCells.value.map((row, index) => row[index]).filter(cell => cell).length;
-  const antiDiagonalCount = markedCells.value.map((row, index) => row[4 - index]).filter(cell => cell).length;
+  const mainDiagonalCount = markedCells.value.map((row, index) => row[index]).filter(cell => cell === BingoCellStatus.Marked).length;
+  const antiDiagonalCount = markedCells.value.map((row, index) => row[4 - index]).filter(cell => cell === BingoCellStatus.Marked).length;
+  const mainDiagonalStolenCount = markedCells.value.map((row, index) => row[index]).filter(cell => cell === BingoCellStatus.Stolen).length;
+  const antiDiagonalStolenCount = markedCells.value.map((row, index) => row[4 - index]).filter(cell => cell === BingoCellStatus.Stolen).length;
 
   if (mainDiagonalCount === 5) bingos++;
   if (antiDiagonalCount === 5) bingos++;
 
-  if (mainDiagonalCount === 4) reaches++;
-  if (antiDiagonalCount === 4) reaches++;
+  if (mainDiagonalCount === 4 && mainDiagonalStolenCount === 0) reaches++;
+  if (antiDiagonalCount === 4 && antiDiagonalStolenCount === 0) reaches++;
 
   if (bingos > 0) {
     currentStatus.value = Status.Bingo;
@@ -112,6 +128,10 @@ watch(markedCells, checkBingoAndReach, { deep: true });
 
 .cell.marked {
   background-color: #4caf50;
+}
+
+.cell.stolen {
+  background-color: #f44336;
 }
 
 .status {

@@ -1,8 +1,9 @@
 import { Server } from "npm:socket.io";
 import { ref, watch } from "npm:vue";
 import { generateNewNumber } from "./bingologic.ts";
+import { addAnswer, quizStart } from "./quiz.ts";
 
-const io = new Server({
+export const io = new Server({
   cors: {
     origin: "*",
   },
@@ -37,12 +38,17 @@ io.on("connection", (socket) => {
   );
 
   socket.on("chat", (data: { name: string; message: string }) => {
+    console.log(data);
     io.emit("chat", { id: self.crypto.randomUUID(), ...data });
+  });
+
+  socket.on("answer", (data: { answer: string; uuid: string }) => {
+    addAnswer(data.answer, data.uuid);
   });
 });
 
-adminIo.on("connection", (socket) => {
-  socket.on("newNumber", () => {
+adminIo.on("connection", (adminSocket) => {
+  adminSocket.on("newNumber", () => {
     if (oldNumbers.value.length === 75) return;
     latestNumber.value = generateNewNumber(oldNumbers.value);
     oldNumbers.value.push(latestNumber.value);
@@ -51,10 +57,14 @@ adminIo.on("connection", (socket) => {
     adminIo.emit("allNumbers", oldNumbers.value);
   });
 
-  socket.on("resetAll", () => {
+  adminSocket.on("resetAll", () => {
     oldNumbers.value = [];
     latestNumber.value = null;
     currentUsersStatus.value = {};
+  });
+
+  adminSocket.on("quizStart", (quizId: string) => {
+    quizStart(quizId);
   });
 });
 

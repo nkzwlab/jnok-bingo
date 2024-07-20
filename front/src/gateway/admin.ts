@@ -16,6 +16,26 @@ adminSocket.on(
   },
 );
 
+/* adminIo.emit("adminQuizEnd", {
+    quizId,
+    counts,
+    fastest: {
+      userAnswer: fastest?.userAnswer,
+      timestamp: fastest ? timestamp - fastest.timestamp : undefined,
+    },
+  }); */
+
+adminSocket.on(
+  "adminQuizEnd",
+  (data: {
+    quizId: string;
+    counts: { [key: string]: number };
+    fastest: { userAnswer: string | undefined; timestamp: number | undefined };
+  }) => {
+    console.log(data);
+  },
+);
+
 adminSocket.on("allNumbers", (numbers: number[]) => {
   allNumbers.value = numbers;
 });
@@ -26,4 +46,8 @@ export function newNumber() {
 
 export function resetAll() {
   adminSocket.emit("resetAll");
+}
+
+export function quizStart(quizId: string) {
+  adminSocket.emit("quizStart", quizId);
 }

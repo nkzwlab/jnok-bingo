@@ -19,6 +19,9 @@
           <button @click="toggleModal">Close</button>
         </div>
       </div>
+      <div v-if="inQuiz" class="quiz-modal">
+        <QuizModal />
+      </div>
     </div>
     <ChatView v-if="showChat" class="chat-view" />
     <div class="floating-chat-btn-container" :class="{ 'chat-on': showChat }">
@@ -33,6 +36,8 @@ import { computed, ref } from 'vue';
 import BingoUI from '../components/BingoGrid.vue';
 import { allNumbers, grid, name } from '@/states';
 import ChatView from '@/components/ChatView.vue';
+import { inQuiz } from '@/states/quiz';
+import QuizModal from '@/components/QuizModal.vue';
 
 const isModalOpen = ref(true);
 
@@ -174,5 +179,19 @@ const showChat = ref(false);
 .floating-chat-btn-container.chat-on {
   /* 左に20%ずらす */
   right: calc(20% + 20px);
+}
+
+.quiz-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  /* precentage */
+  width: 80%;
+  height: 50%;
 }
 </style>

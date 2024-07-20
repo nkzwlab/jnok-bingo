@@ -22,11 +22,15 @@
         <span class="result-content">{{ numberHistory }}</span>
       </div>
     </div>
+    <div class="bottom-panel">
+      <button v-for="quizId in quizIds" :key="quizId" class="quiz-btn" @click="quizStart(quizId)">
+      </button>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { newNumber, resetAll } from '@/gateway/admin';
+import { newNumber, quizStart, resetAll } from '@/gateway/admin';
 import { allNumbers, bingoPeople } from '@/states/admin';
 import { computed } from 'vue';
 import '../gateway/admin';
@@ -35,6 +39,8 @@ import router from '@/router';
 
 const numberHistory = computed(() => allNumbers.value.slice(0, -1).reverse().join(', '));
 const currentNumber = computed(() => allNumbers.value[allNumbers.value.length - 1]);
+
+let quizIds = ["q1", "q2", "q3", "q4"];
 
 onMounted(() => {
   if (!localStorage.getItem('pwd1234')) {
@@ -141,6 +147,11 @@ body {
   font-size: 48px;
   /* Reduced size for large text */
   color: #ff5722;
+}
+
+.quiz-btn {
+  background-color: #1e1e1e;
+  height: 10px;
 }
 
 @media (min-width: 1024px) {
