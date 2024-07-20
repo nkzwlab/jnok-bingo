@@ -135,7 +135,7 @@ const allQuizItems: {
     ],
   },
   q3: {
-    desc: "遠藤よりも苗字が多いのは？",
+    desc: "遠藤よりもレアな苗字は？",
     selections: [
       {
         id: "A",
