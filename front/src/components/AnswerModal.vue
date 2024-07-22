@@ -5,7 +5,8 @@
     <h3>
       {{ fastest }}</h3>
     <div class="container">
-      <div class="card" v-for="item in currentQuizItems" :key="item.id">
+      <div v-for="item in currentQuizItems" :key="item.id"
+        :class='{ "card": true, "correct": item.id.toLowerCase() === answer }'>
         <div class="image-box">
           <img :src="item.img" alt="image" class="image" />
         </div>
@@ -20,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { answerRevealed, currentQuizItems, fastest, quizDescription, quizModalOpen } from '@/states/quizData';
+import { answer, answerRevealed, currentQuizItems, fastest, quizDescription, quizModalOpen } from '@/states/quizData';
 import { onMounted } from 'vue';
 import { ref, } from 'vue';
 
@@ -68,6 +69,11 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   height: calc(35vh - 20px);
+}
+
+.card.correct {
+  /* 薄い黄色 */
+  background-color: #ffffcc;
 }
 
 .image-box {

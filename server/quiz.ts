@@ -60,6 +60,7 @@ export async function quizStart(quizId: string) {
   adminIo.emit("adminQuizEnd", {
     quizId,
     counts,
+    answer,
     fastest: {
       userAnswer: fastest?.userAnswer,
       timestamp: fastest ? fastest.timestamp - timestamp : undefined,

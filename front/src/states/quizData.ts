@@ -19,6 +19,7 @@ import { ref } from "vue";
 export const quizModalOpen = ref(false);
 
 export const answerRevealed = ref(false);
+export const answer = ref<null | "a" | "b" | "c" | "d">(null);
 
 export const quizDescription = ref("");
 export const fastest = ref("");
@@ -189,6 +190,39 @@ const allQuizItems: {
         label: "d",
         desc: "サワ（サワヤンゲームズ）",
         img: "/imgs/q4d.jpg",
+      },
+    ],
+  },
+  q5: {
+    desc: "答えはDです",
+    selections: [
+      {
+        id: "A",
+        label: "a",
+        count: 13,
+        desc: "s",
+        img: "https://via.placeholder.com/150",
+      },
+      {
+        id: "B",
+        label: "b",
+        count: 10,
+        desc: "s",
+        img: "https://via.placeholder.com/150",
+      },
+      {
+        id: "C",
+        label: "c",
+        count: 13,
+        desc: "s",
+        img: "https://via.placeholder.com/150",
+      },
+      {
+        id: "D",
+        label: "d",
+        count: 12,
+        desc: "s",
+        img: "https://via.placeholder.com/150",
       },
     ],
   },

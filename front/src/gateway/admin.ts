@@ -2,6 +2,7 @@ import { io } from "socket.io-client";
 import { allNumbers, bingoPeople } from "@/states/admin";
 import { isDev } from "@/utils/is_dev";
 import {
+  answer,
   answerRevealed,
   currentQuizItems,
   fastest,
@@ -26,6 +27,7 @@ adminSocket.on(
   "adminQuizEnd",
   async (data: {
     quizId: string;
+    answer: string;
     counts: { [key: string]: number };
     fastest: {
       userAnswer: string | undefined;
@@ -47,11 +49,13 @@ adminSocket.on(
       const timestampInSec = data.fastest.timestamp / 1000;
       fastest.value = `最速回答は${data.fastest.username}さんの、${timestampInSec}秒でした！`;
     }
+    answer.value = data.answer as "a" | "b" | "c" | "d";
 
     await new Promise((resolve) => setTimeout(resolve, 10 * 3000));
     answerRevealed.value = false;
     quizModalOpen.value = false;
     fastest.value = "";
+    answer.value = null;
   },
 );
 
