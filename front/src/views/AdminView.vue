@@ -20,7 +20,7 @@
     <div class="right-panel">
       <div class="result-item current-number">
         <span class="result-label">今回の数:</span>
-        <span class="result-content large">{{ currentNumber }}</span>
+        <span class="result-content large">{{ isLotteryStarted ? lotteryNumber : currentNumber }}</span>
       </div>
       <div class="result-item past-numbers">
         <span class="result-label">過去の数:</span>
@@ -44,6 +44,7 @@ import router from '@/router'
 import AnswerModal from '@/components/AnswerModal.vue'
 import { quizModalOpen, quizStart } from '@/states/quizData'
 import { startDrumRoll, stopDrumRoll } from '@/states/drumRoll'
+import { starLotteryAnimation, stopLotteryAnimation } from '@/states/lotteryAnimation'
 
 const numberHistory = computed(() => allNumbers.value.slice(0, -1).reverse().join(', '))
 const currentNumber = computed(() => allNumbers.value[allNumbers.value.length - 1])
@@ -51,12 +52,18 @@ const currentNumber = computed(() => allNumbers.value[allNumbers.value.length - 
 let quizIds = ['q1', 'q2', 'q3', 'q4', 'q5']
 
 const isLotteryStarted = ref(false)
+const lotteryNumber = ref(0)
+
 const startLottery = () => {
   if (!isLotteryStarted.value) {
     startDrumRoll()
+    starLotteryAnimation(allNumbers.value, (randomNumber: number) =>
+      lotteryNumber.value = randomNumber
+    )
     isLotteryStarted.value = true
   } else {
     stopDrumRoll()
+    stopLotteryAnimation()
     newNumber()
     isLotteryStarted.value = false
   }
@@ -167,6 +174,11 @@ body {
   font-size: 48px;
   /* Reduced size for large text */
   color: #ff5722;
+}
+
+.result-content.random {
+  font-size: 40px;
+  margin-bottom: 16px;
 }
 
 .quiz-btn {
