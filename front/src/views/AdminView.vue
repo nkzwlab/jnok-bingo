@@ -5,7 +5,7 @@
     </div>
     <div class="left-panel">
       <button class="new-number-btn" @click="startLottery" :disabled="allNumbers.length === 75">
-        {{ isLotteryStarted ? 'ストップ' : '次の数' }}
+        {{ isLotteryStarted ? '抽選ストップ' : '次の数' }}
       </button>
       <button class="new-number-btn" @click="resetAll">リセット</button>
       <div class="result-item bingo-item">
@@ -174,11 +174,6 @@ body {
   font-size: 48px;
   /* Reduced size for large text */
   color: #ff5722;
-}
-
-.result-content.random {
-  font-size: 40px;
-  margin-bottom: 16px;
 }
 
 .quiz-btn {
