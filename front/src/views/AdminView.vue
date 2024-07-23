@@ -4,7 +4,9 @@
       <AnswerModal />
     </div>
     <div class="left-panel">
-      <button class="new-number-btn" @click="newNumber" :disabled="allNumbers.length === 75">次の数</button>
+      <button class="new-number-btn" @click="startLottery" :disabled="allNumbers.length === 75">
+        {{ isLotteryStarted ? 'ストップ' : '次の数' }}
+      </button>
       <button class="new-number-btn" @click="resetAll">リセット</button>
       <div class="result-item bingo-item">
         <span class="result-label">ビンゴ:</span>
@@ -33,19 +35,32 @@
 </template>
 
 <script setup lang="ts">
-import { newNumber, resetAll } from '@/gateway/admin';
-import { allNumbers, bingoPeople } from '@/states/admin';
-import { computed } from 'vue';
-import '../gateway/admin';
-import { onMounted } from 'vue';
-import router from '@/router';
-import AnswerModal from '@/components/AnswerModal.vue';
-import { quizModalOpen, quizStart } from '@/states/quizData';
+import { newNumber, resetAll } from '@/gateway/admin'
+import { allNumbers, bingoPeople } from '@/states/admin'
+import { computed, ref } from 'vue'
+import '../gateway/admin'
+import { onMounted } from 'vue'
+import router from '@/router'
+import AnswerModal from '@/components/AnswerModal.vue'
+import { quizModalOpen, quizStart } from '@/states/quizData'
+import { startDrumRoll, stopDrumRoll } from '@/states/drumRoll'
 
-const numberHistory = computed(() => allNumbers.value.slice(0, -1).reverse().join(', '));
-const currentNumber = computed(() => allNumbers.value[allNumbers.value.length - 1]);
+const numberHistory = computed(() => allNumbers.value.slice(0, -1).reverse().join(', '))
+const currentNumber = computed(() => allNumbers.value[allNumbers.value.length - 1])
 
-let quizIds = ["q1", "q2", "q3", "q4", "q5"];
+let quizIds = ['q1', 'q2', 'q3', 'q4', 'q5']
+
+const isLotteryStarted = ref(false)
+const startLottery = () => {
+  if (!isLotteryStarted.value) {
+    startDrumRoll()
+    isLotteryStarted.value = true
+  } else {
+    stopDrumRoll()
+    newNumber()
+    isLotteryStarted.value = false
+  }
+}
 
 onMounted(() => {
   if (!localStorage.getItem('pwd1234')) {
