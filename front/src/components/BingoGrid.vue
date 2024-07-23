@@ -154,7 +154,7 @@ watch(markedCells, checkBingoAndReach, { deep: true });
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 700px) {
   .bingo-grid {
     max-width: 100%;
     gap: 3px;
