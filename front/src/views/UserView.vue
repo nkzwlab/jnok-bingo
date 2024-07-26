@@ -25,7 +25,7 @@
     </div>
     <ChatView v-if="showChat" class="chat-view" />
     <div class="floating-chat-btn-container" :class="{ 'chat-on': showChat }">
-      <button class="floating-chat-btn" @click="showChat = !showChat">Chat</button>
+      <button class="floating-chat-btn chat" @click="showChat = !showChat">Chat</button>
       <button class="floating-chat-btn" @click="toggleModal">名前を入力</button>
     </div>
   </div>
@@ -34,10 +34,11 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import BingoUI from '../components/BingoGrid.vue';
-import { allNumbers, grid, name } from '@/states';
+import { allNumbers, checkIfToReset, grid, name } from '@/states';
 import ChatView from '@/components/ChatView.vue';
 import { inQuiz } from '@/states/quiz';
 import QuizModal from '@/components/QuizModal.vue';
+import { onMounted } from 'vue';
 
 const isModalOpen = ref(true);
 
@@ -51,6 +52,10 @@ const numberHistory = computed(() => allNumbers.value.slice(0, -1).reverse().joi
 const currentNumber = computed(() => allNumbers.value[allNumbers.value.length - 1]);
 
 const showChat = ref(false);
+
+onMounted(() => {
+  checkIfToReset()
+})
 </script>
 
 <style scoped>
@@ -150,6 +155,10 @@ const showChat = ref(false);
   .wrapper {
     flex-direction: column;
     justify-content: center;
+  }
+
+  .floating-chat-btn.chat {
+    display: none;
   }
 }
 

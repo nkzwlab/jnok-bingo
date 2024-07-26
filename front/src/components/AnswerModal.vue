@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { answer, answerRevealed, currentQuizItems, fastest, quizDescription, quizModalOpen } from '@/states/quizData';
+import { answer, answerRevealed, currentQuizItems, fastest, quizDescription } from '@/states/quizData';
 import { onMounted } from 'vue';
 import { ref, } from 'vue';
 

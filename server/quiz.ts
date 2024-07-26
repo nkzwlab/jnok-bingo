@@ -10,7 +10,7 @@ const answers: { [key: string]: string } = {
 
 let acceptingAnswers = false;
 
-const answerMap: {
+let answerMap: {
   [key: string]: {
     userAnswer: string;
     userName: string;
@@ -71,6 +71,8 @@ export async function quizStart(quizId: string) {
   io.emit("userQuizEnd", {
     answer,
   });
+
+  answerMap = {};
 }
 
 export function addAnswer(
