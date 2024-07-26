@@ -5,7 +5,6 @@ import { ref } from "vue";
 import { answerCorrect } from "./quiz";
 
 const serializer = {
-  // use base64
   read: (v: any) => (v ? JSON.parse(atob(v)) : null),
   write: (v: any) => btoa(JSON.stringify(v)),
 };
@@ -14,13 +13,6 @@ const serializer = {
 export const allNumbers = ref<number[]>([]);
 export const uuid = useLocalStorage("userId", nanoid());
 export const name = useLocalStorage("userName", "", { serializer });
-
-/*  {
-    serializer: {
-      read: (v: any) => v ? JSON.parse(v) : null,
-      write: (v: any) => JSON.stringify(v),
-    },
-  }, */
 
 // Bingo status
 export const grid = useLocalStorage<number[][]>("grid", generateBingoArray(), {
