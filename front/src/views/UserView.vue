@@ -201,6 +201,6 @@ onMounted(() => {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   /* precentage */
   width: 80%;
-  height: 50%;
+  height: 90%;
 }
 </style>

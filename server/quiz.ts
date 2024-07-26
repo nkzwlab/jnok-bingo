@@ -19,7 +19,7 @@ let answerMap: {
 } = {};
 
 export async function quizStart(quizId: string) {
-  io.emit("quizStart");
+  io.emit("quizStart", quizId);
   acceptingAnswers = true;
   const timestamp = Date.now();
   await new Promise((resolve) => setTimeout(resolve, 10 * 1000));

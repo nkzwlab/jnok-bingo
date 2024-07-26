@@ -51,8 +51,8 @@ socket.on("chat", (data: { name: string; message: string; id: string }) => {
   messages.push(data);
 });
 
-socket.on("quizStart", () => {
-  inQuiz.value = true;
+socket.on("quizStart", (quizId: string) => {
+  inQuiz.value = quizId;
 });
 /* io.emit("userQuizEnd", {
     answer,
@@ -77,7 +77,7 @@ export const answerCorrect = ref<boolean | null>(null);
     );
   }
   await new Promise((resolve) => setTimeout(resolve, 10 * 3000));
-  inQuiz.value = false;
+  inQuiz.value = null;
   selectedOption.value = null;
   answerCorrect.value = null;
   alreadyAnswered.value = false;

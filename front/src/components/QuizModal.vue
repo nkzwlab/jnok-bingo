@@ -1,10 +1,9 @@
 <template>
-  <!-- <button v-if="answerCorrect != null" @click="inQuiz = false">閉じる</button> -->
+  <div v-if="answerCorrect != null" class="result">
+    <span id="sym" v-if="answerCorrect === true">⭕️</span>
+    <span id="sym" v-else>❌</span>
+  </div>
   <div class="options">
-    <div v-if="answerCorrect != null" class="result">
-      <span v-if="answerCorrect === true">⭕️</span>
-      <span v-else>❌</span>
-    </div>
     <button v-for="option in options" :key="option" @click="selectOption(option)" :class="{
       selected: selectedOption === option,
       disabled: alreadyAnswered,
@@ -13,6 +12,7 @@
       c: option === 'C',
       d: option === 'D',
     }">
+      <img :src="`/imgs/${inQuiz}${option.toLowerCase()}.png`" />
       {{ option }}
     </button>
   </div>
@@ -20,8 +20,7 @@
 
 <script setup lang="ts">
 import { quizAnswer } from '@/gateway';
-// import { inQuiz } from '@/states/quiz';
-import { alreadyAnswered, answerCorrect, options, selectedOption } from '@/states/quiz';
+import { alreadyAnswered, answerCorrect, inQuiz, options, selectedOption } from '@/states/quiz';
 
 const selectOption = (option: string) => {
   if (alreadyAnswered.value) {
@@ -34,23 +33,22 @@ const selectOption = (option: string) => {
 </script>
 
 <style scoped>
-.quiz-modal {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f0f0f0;
-}
-
 .options {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
+  gap: 10px;
   width: 100%;
   height: 100%;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 .options button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: 100%;
   font-size: 2rem;
@@ -58,6 +56,25 @@ const selectOption = (option: string) => {
   border: 1px solid #fff;
   cursor: pointer;
   transition: background-color 0.3s;
+  overflow: hidden;
+  position: relative;
+  padding: 0;
+}
+
+.options img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+
+.options button span {
+  position: relative;
+  z-index: 2;
 }
 
 button.a {
@@ -86,13 +103,12 @@ button.disabled {
 }
 
 .result {
-  /* 真ん中に大きく表示 */
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 5rem;
   font-weight: bold;
-
+  z-index: 2;
 }
 </style>
