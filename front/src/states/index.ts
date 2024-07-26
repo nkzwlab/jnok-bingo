@@ -53,6 +53,7 @@ export const markedCells = useLocalStorage<BingoCellStatus[][]>(
       }
     }),
   ),
+  { serializer },
 );
 
 export function checkIfToReset() {
