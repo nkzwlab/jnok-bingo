@@ -84,12 +84,11 @@ onMounted(() => {
   margin-top: 16px;
   font-size: 40px;
   color: #fff;
+  text-align: center;
 }
 
-.bingo-info button {
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
+.bingo-info {
+  padding: 0 20px;
 }
 
 .result-item {
@@ -107,6 +106,7 @@ onMounted(() => {
 
 .result-content {
   font-size: 24px;
+  text-align: center;
   color: #ffffff;
 }
 
