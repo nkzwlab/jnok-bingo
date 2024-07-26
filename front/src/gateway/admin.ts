@@ -51,7 +51,7 @@ adminSocket.on(
     }
     answer.value = data.answer as "a" | "b" | "c" | "d";
 
-    await new Promise((resolve) => setTimeout(resolve, 10 * 3000));
+    await new Promise((resolve) => setTimeout(resolve, 30 * 1000));
     answerRevealed.value = false;
     quizModalOpen.value = false;
     fastest.value = "";

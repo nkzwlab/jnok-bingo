@@ -76,7 +76,7 @@ export const answerCorrect = ref<boolean | null>(null);
       answerCorrect.value ? BingoCellStatus.Marked : BingoCellStatus.Stolen,
     );
   }
-  await new Promise((resolve) => setTimeout(resolve, 10 * 3000));
+  await new Promise((resolve) => setTimeout(resolve, 30 * 1000));
   inQuiz.value = null;
   selectedOption.value = null;
   answerCorrect.value = null;
