@@ -25,9 +25,9 @@ import { answer, answerRevealed, currentQuizItems, fastest, quizDescription } fr
 import { onMounted } from 'vue';
 import { ref, } from 'vue';
 
-const countdown = ref(10);
+const countdown = ref(20);
 onMounted(() => {
-  countdown.value = 10;
+  countdown.value = 20;
   const timer = setInterval(() => {
     countdown.value--;
     if (countdown.value === 0) {

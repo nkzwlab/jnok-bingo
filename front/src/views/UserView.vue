@@ -1,6 +1,6 @@
 <template>
-  <div class="view-container">
-    <div class="wrapper">
+  <div class="view-container" :class="{ 'mobile': isMobile }">
+    <div class="wrapper" :class="{ 'mobile': isMobile }" v-if="!isMobile || currentTab === 'bingo'">
       <div class="bingo-grid">
         <BingoUI :grid="grid" />
       </div>
@@ -13,34 +13,40 @@
           <span class="result-content">{{ numberHistory }}</span>
         </div>
       </div>
-      <div v-if="isModalOpen" class="modal-overlay" @click="toggleModal">
-        <div class="modal-content" @click.stop>
-          <input v-model="name" placeholder="Enter your name" />
-          <button @click="toggleModal">Close</button>
-        </div>
-      </div>
-      <div v-if="inQuiz" class="quiz-modal">
-        <QuizModal />
-      </div>
     </div>
-    <ChatView v-if="showChat" class="chat-view" />
-    <div class="floating-chat-btn-container" :class="{ 'chat-on': showChat }">
+    <ChatView v-if="(!isMobile && showChat) || (isMobile && currentTab === 'chat')" class="chat-view"
+      :class="{ 'mobile': isMobile }" />
+    <div class="floating-chat-btn-container" v-if="!isMobile" :class="{ 'chat-on': showChat }">
       <button class="floating-chat-btn chat" @click="showChat = !showChat">Chat</button>
       <button class="floating-chat-btn" @click="toggleModal">名前を入力</button>
     </div>
+    <div v-if="isMobile" class="bottom-tab-bar">
+      <button @click="currentTab = 'bingo'" :class="{ active: currentTab === 'bingo' }">Bingo</button>
+      <button @click="currentTab = 'chat'" :class="{ active: currentTab === 'chat', }">Chat</button>
+      <button @click="toggleModal">名前を入力</button>
+    </div>
+    <div v-if="isModalOpen" class="modal-overlay" @click="toggleModal">
+      <div class="modal-content" @click.stop>
+        <input v-model="name" placeholder="Enter your name" />
+        <button @click="toggleModal">Close</button>
+      </div>
+    </div>
+    <div v-if="inQuiz" class="quiz-modal">
+      <QuizModal />
+    </div>
   </div>
 </template>
-
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import BingoUI from '../components/BingoGrid.vue';
 import { allNumbers, checkIfToReset, grid, name } from '@/states';
 import ChatView from '@/components/ChatView.vue';
 import { inQuiz } from '@/states/quiz';
 import QuizModal from '@/components/QuizModal.vue';
-import { onMounted } from 'vue';
 
 const isModalOpen = ref(true);
+const showChat = ref(false);
+const currentTab = ref('bingo');
 
 const toggleModal = () => {
   if (name.value) {
@@ -51,18 +57,27 @@ const toggleModal = () => {
 const numberHistory = computed(() => allNumbers.value.slice(0, -1).reverse().join(', '));
 const currentNumber = computed(() => allNumbers.value[allNumbers.value.length - 1]);
 
-const showChat = ref(false);
+const isMobile = ref(window.innerWidth <= 900);
+
+const handleResize = () => {
+  isMobile.value = window.innerWidth <= 900;
+};
 
 onMounted(() => {
-  checkIfToReset()
-})
-</script>
+  checkIfToReset();
+  window.addEventListener('resize', handleResize);
+});
 
+</script>
 <style scoped>
 .view-container {
   height: 100vh;
   display: flex;
   background-color: #000;
+}
+
+.view-container.mobile {
+  flex-flow: column;
 }
 
 .wrapper {
@@ -72,12 +87,21 @@ onMounted(() => {
   align-items: center;
 }
 
+.wrapper.mobile {
+  flex-flow: column;
+}
+
 .chat-view {
   width: 20%;
   height: 100vh;
   overflow-y: scroll;
   padding: 10px;
   background-color: white;
+}
+
+#chat-view.mobile {
+  width: 100%;
+
 }
 
 .current-number {
@@ -151,17 +175,6 @@ onMounted(() => {
   right: 20px;
 }
 
-@media screen and (max-width: 900px) {
-  .wrapper {
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .floating-chat-btn.chat {
-    display: none;
-  }
-}
-
 .floating-chat-btn {
   padding: 10px 20px;
   font-size: 16px;
@@ -186,7 +199,6 @@ onMounted(() => {
 }
 
 .floating-chat-btn-container.chat-on {
-  /* 左に20%ずらす */
   right: calc(20% + 20px);
 }
 
@@ -199,8 +211,30 @@ onMounted(() => {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-  /* precentage */
   width: 80%;
   height: 90%;
+}
+
+/* Bottom Tab Bar styles for mobile view */
+.bottom-tab-bar {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+  background-color: #333;
+  color: white;
+}
+
+.bottom-tab-bar button {
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 10px 20px;
+}
+
+.bottom-tab-bar button.active {
+  font-weight: bold;
+  border-bottom: 2px solid #fff;
 }
 </style>

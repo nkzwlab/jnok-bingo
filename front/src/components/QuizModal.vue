@@ -12,7 +12,7 @@
       c: option === 'C',
       d: option === 'D',
     }">
-      <img :src="`/imgs/${inQuiz}${option.toLowerCase()}.png`" />
+      <img :src="`/imgs/${inQuiz}${option.toLowerCase()}.${ext}`" />
       {{ option }}
     </button>
   </div>
@@ -21,6 +21,7 @@
 <script setup lang="ts">
 import { quizAnswer } from '@/gateway';
 import { alreadyAnswered, answerCorrect, inQuiz, options, selectedOption } from '@/states/quiz';
+import { computed } from 'vue';
 
 const selectOption = (option: string) => {
   if (alreadyAnswered.value) {
@@ -30,6 +31,13 @@ const selectOption = (option: string) => {
   alreadyAnswered.value = true;
   selectedOption.value = option.toLowerCase();
 };
+
+const ext = computed(() => {
+  if (inQuiz.value === 'q1' || inQuiz.value === 'q3') {
+    return 'png';
+  }
+  return 'jpg';
+});
 </script>
 
 <style scoped>
