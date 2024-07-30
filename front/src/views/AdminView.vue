@@ -95,6 +95,8 @@ body {
   max-width: 1200px;
   margin: auto;
   color: #ffffff;
+  /* box-sizing */
+  box-sizing: border-box;
 }
 
 .left-panel,

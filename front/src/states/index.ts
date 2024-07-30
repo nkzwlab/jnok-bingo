@@ -4,7 +4,7 @@ import { nanoid } from "nanoid";
 import { ref } from "vue";
 import { answerCorrect } from "./quiz";
 
-const serializer = {
+export const serializer = {
   read: (v: any) => (v ? JSON.parse(atob(v)) : null),
   write: (v: any) => btoa(JSON.stringify(v)),
 };

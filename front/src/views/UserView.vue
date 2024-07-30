@@ -28,6 +28,11 @@
     <div v-if="isModalOpen" class="modal-overlay" @click="toggleModal">
       <div class="modal-content" @click.stop>
         <input v-model="name" placeholder="Enter your name" />
+        <div v-if="showQuizResult">
+          <div>正解したクイズ数: {{ quizResults.correct }}</div>
+          <div>不正解だったクイズ数: {{ quizResults.incorrect }}</div>
+          <br />
+        </div>
         <button @click="toggleModal">Close</button>
       </div>
     </div>
@@ -41,7 +46,7 @@ import { computed, ref, onMounted } from 'vue';
 import BingoUI from '../components/BingoGrid.vue';
 import { allNumbers, checkIfToReset, grid, name } from '@/states';
 import ChatView from '@/components/ChatView.vue';
-import { inQuiz } from '@/states/quiz';
+import { inQuiz, showQuizResult, quizResults } from '@/states/quiz';
 import QuizModal from '@/components/QuizModal.vue';
 
 const isModalOpen = ref(true);
@@ -78,6 +83,7 @@ onMounted(() => {
 
 .view-container.mobile {
   flex-flow: column;
+  height: 100svh;
 }
 
 .wrapper {

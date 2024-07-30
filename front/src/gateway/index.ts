@@ -13,6 +13,9 @@ import { messages } from "@/states/chat";
 import {
   alreadyAnswered,
   answerCorrect,
+  correctAnswer,
+  incresaseCorrect,
+  incresaseIncorrect,
   inQuiz,
   selectedOption,
 } from "@/states/quiz";
@@ -71,7 +74,11 @@ export const answerCorrect = ref<boolean | null>(null);
 
   answerCorrect.value = data.answer === selectedOption.value;
   alreadyAnswered.value = true;
-  if (answerCorrect.value === false) {
+  correctAnswer.value = data.answer;
+  if (answerCorrect.value) {
+    incresaseCorrect();
+  } else {
+    incresaseIncorrect();
     stealCell(
       answerCorrect.value ? BingoCellStatus.Marked : BingoCellStatus.Stolen,
     );
@@ -80,5 +87,6 @@ export const answerCorrect = ref<boolean | null>(null);
   inQuiz.value = null;
   selectedOption.value = null;
   answerCorrect.value = null;
+  correctAnswer.value = null;
   alreadyAnswered.value = false;
 });
