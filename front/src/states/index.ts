@@ -3,6 +3,7 @@ import { useLocalStorage } from "@vueuse/core";
 import { nanoid } from "nanoid";
 import { ref } from "vue";
 import { answerCorrect } from "./quiz";
+import { currentVersion } from "@/consts";
 
 export const serializer = {
   read: (v: any) => (v ? JSON.parse(atob(v)) : null),
@@ -52,10 +53,10 @@ export function checkIfToReset() {
   // if localstorage key "version" is not set and userId exists in localstorage, reset the game
   if (
     (!localStorage.getItem("version") && localStorage.getItem("userId")) ||
-    Number(localStorage.getItem("version")) < 2
+    Number(localStorage.getItem("version")) < currentVersion
   ) {
     localStorage.clear();
-    localStorage.setItem("version", "2");
+    localStorage.setItem("version", String(currentVersion));
     new Promise((resolve) => setTimeout(resolve, 500)).then(() => {
       location.reload();
     });

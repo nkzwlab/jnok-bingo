@@ -1,0 +1,1 @@
+../../front/src/consts/index.ts

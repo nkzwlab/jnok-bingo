@@ -19,6 +19,7 @@ import {
   inQuiz,
   selectedOption,
 } from "@/states/quiz";
+import { showAnswerModalSeconds } from "@/consts";
 
 const socket = io(isDev ? "http://localhost:8000" : "/", {
   path: isDev ? "/socket.io" : "/user-socket/socket.io",
@@ -83,7 +84,9 @@ export const answerCorrect = ref<boolean | null>(null);
       answerCorrect.value ? BingoCellStatus.Marked : BingoCellStatus.Stolen,
     );
   }
-  await new Promise((resolve) => setTimeout(resolve, 30 * 1000));
+  await new Promise((resolve) =>
+    setTimeout(resolve, showAnswerModalSeconds * 1000),
+  );
   inQuiz.value = null;
   selectedOption.value = null;
   answerCorrect.value = null;

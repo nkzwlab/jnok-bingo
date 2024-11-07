@@ -1,3 +1,4 @@
+import { thinkingTimeSeconds } from "./consts/index.ts";
 import { adminIo, io } from "./main.ts";
 
 const answers: { [key: string]: string } = {
@@ -22,7 +23,7 @@ export async function quizStart(quizId: string) {
   io.emit("quizStart", quizId);
   acceptingAnswers = true;
   const timestamp = Date.now();
-  await new Promise((resolve) => setTimeout(resolve, 20 * 1000));
+  await new Promise((resolve) => setTimeout(resolve, thinkingTimeSeconds * 1000));
   acceptingAnswers = false;
   // check answers
 

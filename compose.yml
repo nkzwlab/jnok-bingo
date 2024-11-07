@@ -1,5 +1,3 @@
-# Deno Dockerfile on server/Dockerfile
-
 services:
   deno:
     build: ./server

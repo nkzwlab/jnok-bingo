@@ -8,6 +8,7 @@ import {
   fastest,
   quizModalOpen,
 } from "@/states/quizData";
+import { showAnswerModalSeconds } from "@/consts";
 
 const adminSocket = io(isDev ? "http://localhost:8001" : "/", {
   path: isDev ? "/socket.io" : "/admin-socket/socket.io",
@@ -51,7 +52,9 @@ adminSocket.on(
     }
     answer.value = data.answer as "a" | "b" | "c" | "d";
 
-    await new Promise((resolve) => setTimeout(resolve, 30 * 1000));
+    await new Promise((resolve) =>
+      setTimeout(resolve, showAnswerModalSeconds * 1000),
+    );
     answerRevealed.value = false;
     quizModalOpen.value = false;
     fastest.value = "";

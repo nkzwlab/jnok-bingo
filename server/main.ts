@@ -1,5 +1,5 @@
 import { Server } from "npm:socket.io";
-import { ref, watch } from "npm:vue";
+import { Ref, ref, watch } from "npm:vue";
 import { generateNewNumber } from "./bingologic.ts";
 import { addAnswer, quizStart } from "./quiz.ts";
 
@@ -72,7 +72,9 @@ adminIo.on("connection", (adminSocket) => {
 
 const currentUsersStatus = ref<{
   [key: string]: { name: string; status: number; currentNumber: number };
-}>({});
+}>({}) as Ref<{
+  [key: string]: { name: string; status: number; currentNumber: number };
+}>;
 
 watch(
   [currentUsersStatus, latestNumber],
@@ -98,11 +100,3 @@ io.listen(8000);
 adminIo.listen(8001);
 
 console.log("Server started");
-/* export function sendChat(name: string, message: string) {
-  socket.emit("chat", { name, message });
-}
-
-socket.on("chat", (data: { name: string; message: string }) => {
-  messages.push(data);
-});
- */
