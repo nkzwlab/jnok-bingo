@@ -42,22 +42,25 @@ onMounted(() => {
 <style scoped>
 .quiz-description {
   font-size: 70px;
+  margin: 0px;
 }
 
 .answer-modal {
   display: flex;
   flex-flow: column;
   align-items: center;
+  width: 100%;
+  height: 100%;
 }
 
 .container {
+  flex-grow: 1;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
-  width: 100vw;
-  height: 70vh;
   padding: 20px;
   box-sizing: border-box;
+  width: 100%;
 }
 
 .card {
@@ -68,7 +71,6 @@ onMounted(() => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: calc(35vh - 20px);
 }
 
 .card.correct {
@@ -84,12 +86,16 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  position: relative;
 }
 
 .image-box img {
+  position: absolute;
   width: 100%;
   height: 100%;
   object-fit: contain;
+  left: 0px;
+  right: 0px;
 }
 
 .info-wrapper {
