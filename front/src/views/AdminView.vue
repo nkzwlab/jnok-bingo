@@ -1,5 +1,8 @@
 <template>
   <div class="bingo-container">
+    <div class="version">
+      現在のバージョン: {{ currentVersion }}
+    </div>
     <div class="modal-overlay" v-if="quizModalOpen">
       <AnswerModal />
     </div>
@@ -45,8 +48,9 @@ import AnswerModal from '@/components/AnswerModal.vue'
 import { quizModalOpen, quizStart } from '@/states/quizData'
 import { startDrumRoll, stopDrumRoll } from '@/states/drumRoll'
 import { starLotteryAnimation, stopLotteryAnimation } from '@/states/lotteryAnimation'
+import { currentVersion } from '@/consts'
 
-const numberHistory = computed(() => allNumbers.value.slice(0, -1).reverse().join(', '))
+const numberHistory = computed(() => allNumbers.value.slice(0, -1).join(', '))
 const currentNumber = computed(() => allNumbers.value[allNumbers.value.length - 1])
 
 let quizIds = ['q1', 'q2', 'q3', 'q4', 'q5']
@@ -82,6 +86,12 @@ body {
   background-color: #121212;
   color: #ffffff;
   font-family: 'Arial', sans-serif;
+}
+
+.version {
+  /* center dark text */
+  text-align: center;
+  color: #555;
 }
 
 .bingo-container {

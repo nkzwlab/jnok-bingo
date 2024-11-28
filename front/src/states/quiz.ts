@@ -36,6 +36,5 @@ export function incresaseIncorrect() {
 }
 
 export const showQuizResult = computed(() => {
-  console.log(quizResults.value);
   return quizResults.value.correct + quizResults.value.incorrect > 0;
 });

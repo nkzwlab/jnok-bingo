@@ -57,6 +57,7 @@ socket.on("chat", (data: { name: string; message: string; id: string }) => {
 
 socket.on("quizStart", (quizId: string) => {
   inQuiz.value = quizId;
+  selectedOption.value = null;
 });
 /* io.emit("userQuizEnd", {
     answer,

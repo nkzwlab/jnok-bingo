@@ -71,6 +71,7 @@ export function newNumber() {
 }
 
 export function resetAll() {
+  allNumbers.value = [];
   adminSocket.emit("resetAll");
 }
 
